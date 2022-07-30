@@ -5,11 +5,9 @@ import unittest
 
 from app import create_app
 from app.forms import LoginForm
+from app.firestore_service import get_users, get_todos
 
 app = create_app()
-
-todo = ["todo1", "todo2", "todo3"]
-
 
 
 
@@ -49,11 +47,16 @@ def hello():
 
     context = {
         "user_ip": user_ip,
-        "todo": todo,
+        "todo": get_todos(user_id=username),
         "username": username
     }
 
+    users = get_users()
 
+    for user in users:
+        print(user)
+        print(user.id)
+        print(user.to_dict()["password"])
     return render_template("hello.html", **context) # renderizaar templates
 
 
