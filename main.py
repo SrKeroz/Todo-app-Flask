@@ -5,8 +5,8 @@ import unittest
 
 
 from app import create_app
-from app.forms import TodoForm
-from app.firestore_service import get_todos, put_todos
+from app.forms import TodoForm, DeleteTodo
+from app.firestore_service import delete_todo, get_todos, put_todos
 
 app = create_app()
 
@@ -47,12 +47,14 @@ def hello():
     user_ip = session.get("user_ip")
     username = current_user.id
     todo_form = TodoForm()
+    delete_form = DeleteTodo()
 
     context = {
         "user_ip": user_ip,
         "todo": get_todos(user_id=username),
         "username": username,
-        "todo_form": todo_form
+        "todo_form": todo_form,
+        "delete_form": DeleteTodo()
     }
 
     if todo_form.validate_on_submit():
@@ -64,6 +66,16 @@ def hello():
 
     return render_template("hello.html", **context) # renderizaar templates
 
+
+
+@app.route("/todos/delete/<todo_id>", methods=["POST"])
+def delete(todo_id):
+    user_id = current_user.id
+    delete_todo(user_id=user_id, todo_id=todo_id)
+
+    flash("tarea eliminada")
+
+    return redirect(url_for("hello"))
 
 
 if __name__ == "__main__":

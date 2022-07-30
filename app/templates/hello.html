@@ -22,9 +22,9 @@
         {{ wtf.quick_form(todo_form) }}
     </div>
 
-    <ul>
+    <ul class="list-group-item">
         {% for todos in todo %}
-            {{macros.render_todo(todos)}}
+            {{macros.render_todo(todos, delete_form)}}
         {% endfor %}
     </ul>
 {% endblock %}

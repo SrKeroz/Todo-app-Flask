@@ -12,3 +12,7 @@ class LoginForm(FlaskForm):
 class TodoForm(FlaskForm):
     description = StringField("Descipcion", validators=[DataRequired()])
     sumit = SubmitField("create")
+
+
+class DeleteTodo(FlaskForm):
+    submit = SubmitField("Delete")

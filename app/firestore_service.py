@@ -27,5 +27,9 @@ def get_todos(user_id):
 
 def put_todos(user_id, descrition):
     todos_collection_ref = db.collection("users").document(user_id).collection("todos")
-    todos_collection_ref.add({"descripcion": descrition})
+    todos_collection_ref.add({"descripcion": descrition, "done": False})
 
+
+def delete_todo(user_id, todo_id):
+    todo_ref = db.document('users/{}/todos/{}'.format(user_id, todo_id))
+    todo_ref.delete()
