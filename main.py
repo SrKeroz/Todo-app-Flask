@@ -1,3 +1,4 @@
+from turtle import done
 from flask import render_template, request, make_response, redirect, session, flash, url_for
 from flask_login import login_required, current_user
 
@@ -5,8 +6,8 @@ import unittest
 
 
 from app import create_app
-from app.forms import TodoForm, DeleteTodo
-from app.firestore_service import delete_todo, get_todos, put_todos
+from app.forms import TodoForm, DeleteTodo, UpdateTodo
+from app.firestore_service import delete_todo, get_todos, put_todos, update_todo
 
 app = create_app()
 
@@ -48,13 +49,15 @@ def hello():
     username = current_user.id
     todo_form = TodoForm()
     delete_form = DeleteTodo()
+    update_form = UpdateTodo()
 
     context = {
         "user_ip": user_ip,
         "todo": get_todos(user_id=username),
         "username": username,
         "todo_form": todo_form,
-        "delete_form": DeleteTodo()
+        "delete_form": delete_form,
+        "update_form": update_form
     }
 
     if todo_form.validate_on_submit():
@@ -77,6 +80,14 @@ def delete(todo_id):
 
     return redirect(url_for("hello"))
 
+
+@app.route("/todos/update/<todo_id>/<int:done>", methods=["POST"])
+def update(todo_id, done):
+    user_id= current_user.id
+
+    update_todo(user_id=user_id, todo_id=todo_id, done=done)
+
+    return redirect(url_for("hello"))
 
 if __name__ == "__main__":
     app.run(None, 3000, True)
