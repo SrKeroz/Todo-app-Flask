@@ -1,11 +1,12 @@
 from flask import render_template, request, make_response, redirect, session, flash
+from flask_login import login_required
 
 import unittest
 
 
 from app import create_app
 from app.forms import LoginForm
-from app.firestore_service import get_users, get_todos
+from app.firestore_service import get_todos
 
 app = create_app()
 
@@ -40,6 +41,7 @@ def index():
 
 
 @app.route("/hello", methods=["GET", "POST"])
+@login_required
 def hello():
     user_ip = request.cookies.get("user_ip") # obtener la ip desde la cookie
     user_ip = session.get("user_ip")
@@ -51,12 +53,6 @@ def hello():
         "username": username
     }
 
-    users = get_users()
-
-    for user in users:
-        print(user)
-        print(user.id)
-        print(user.to_dict()["password"])
     return render_template("hello.html", **context) # renderizaar templates
 
 

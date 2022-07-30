@@ -14,6 +14,9 @@ db = firestore.client()
 def get_users():
     return db.collection('users').get()
 
+def get_user_id(user_id):
+    return db.collection("users").document(user_id).get()
+
 
 def get_todos(user_id):
     return db.collection("users").document(user_id).collection("todos").get()
