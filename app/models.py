@@ -20,6 +20,6 @@ class UserModel(UserMixin):
     @staticmethod
     def query(user_id):
         user_doc = get_user_id(user_id)
-        user_data = UserData(user_id = user_doc.id, password= user_doc.to_dict()["password"])
+        user_data = UserData(username= user_doc.id, password= user_doc.to_dict()["password"])
 
         return UserModel(user_data)
