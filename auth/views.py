@@ -4,8 +4,9 @@ from app.models import UserData
 from . import auth
 from app.forms import LoginForm
 from flask import render_template
-from app.firestore_service import get_user_id
+from app.firestore_service import get_user_id, user_put
 from app.models import UserModel, UserData
+from werkzeug.security import generate_password_hash, check_password_hash
 
 @auth.route("/login", methods=["GET", "POST"])
 def login():
@@ -28,10 +29,15 @@ def login():
         if user_doc.to_dict() is not None:
             password_from_db = user_doc.to_dict()["password"]
 
-            # validados el password
-            if password == password_from_db:
-                user_data = UserData(username, password)
+            # valida la password cuando esta hasheada
+            if check_password_hash or password (user_doc.to_dict()['password'], password):
+                user_data = UserData(username,password)
                 user = UserModel(user_data)
+
+            # validados el password
+            #if password == password_from_db:
+             #   user_data = UserData(username, password)
+             #   user = UserModel(user_data)
 
                 login_user(user)
 
@@ -56,3 +62,36 @@ def logout():
     flash("regresa pronto")
 
     return redirect(url_for("auth.login"))
+
+
+@auth.route('signup', methods=['GET', 'POST'])
+def signup():
+    signup_form = LoginForm()
+    context = {
+        'signup_form': signup_form
+    }
+
+    if signup_form.validate_on_submit():
+        username = signup_form.username.data
+        password = signup_form.password.data
+
+        user_doc = get_user_id(username)
+
+        # verificamos si el usuario ya esta en la base de datos
+        if user_doc.to_dict() is None:
+            password_hash = generate_password_hash(password)
+            user_data = UserData(username, password_hash)
+            user_put(user_data)
+
+            user = UserModel(user_data)
+
+            login_user(user)
+
+            flash('Bienvenido!')
+
+            return redirect(url_for('hello'))
+
+        else:
+            flash('El usario existe!')
+
+    return render_template('signup.html', **context)
