@@ -17,7 +17,10 @@
         <a href="{{ url_for('index') }}"> Ir a inicio</a>
     {% endif %}
 
-    
+    <div class="container">
+        <h2>crea una nueva tarea</h2>
+        {{ wtf.quick_form(todo_form) }}
+    </div>
 
     <ul>
         {% for todos in todo %}
