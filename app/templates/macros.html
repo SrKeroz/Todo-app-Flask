@@ -5,7 +5,13 @@
         <span class="badge">{{ todos.to_dict().done }}</span>
         Descripción: {{ todos.to_dict().descripcion }}
 
-        {{ wtf.quick_form(delete_form, action=url_for("delete", todo_id=todos.id)) }}
+        <a 
+          	href="{{ url_for('delete', todo_id=todos.id)}}"
+          	class="btn d-inline-block btn-danger">
+                Delete
+          	</a>
+        <buttontype="button" class="btn btn-light">
         {{ wtf.quick_form(update_form, action=url_for("update", todo_id=todos.id, done=todos.to_dict().done )) }}
+        </button>
     </li>
 {% endmacro %}

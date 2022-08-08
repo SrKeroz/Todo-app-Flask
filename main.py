@@ -71,7 +71,7 @@ def hello():
 
 
 
-@app.route("/todos/delete/<todo_id>", methods=["POST"])
+@app.route("/todos/delete/<todo_id>", methods=["GET"])
 def delete(todo_id):
     user_id = current_user.id
     delete_todo(user_id=user_id, todo_id=todo_id)

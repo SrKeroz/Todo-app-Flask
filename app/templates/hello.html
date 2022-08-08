@@ -11,11 +11,14 @@
     {% if username %}
         <h1>Bienvenido, {{ username | capitalize }}</h1>
     {% endif %}
+    
+    <!--
     {% if user_ip %}
         <h1>Tu ip {{user_ip}}</h1>
     {% else %}
         <a href="{{ url_for('index') }}"> Ir a inicio</a>
     {% endif %}
+    -->
 
     <div class="container">
         <h2>crea una nueva tarea</h2>
