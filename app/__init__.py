@@ -12,7 +12,9 @@ login_manager.login_view = "auth.login"
 @login_manager.user_loader
 def load_user(username):
     return UserModel.query(username)
-# Con esto logre solucionar el error que me marcaba. La información la obtuve de stackoverflow, flask-login:Exception: No user_loader has been installed for this LoginManager. Add one with the ‘LoginManager.user_loader’ decorator
+# Con esto logre solucionar el error que me marcaba. 
+# flask-login:Exception: No user_loader has been installed for this LoginManager.
+#  Add one with the ‘LoginManager.user_loader’ decorator
 
 
 
